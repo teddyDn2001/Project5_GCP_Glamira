@@ -8,6 +8,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from pymongo import MongoClient, ASCENDING
+from urllib.parse import quote_plus
 
 
 def mongo_client_from_env() -> MongoClient:
@@ -17,7 +18,7 @@ def mongo_client_from_env() -> MongoClient:
     admin_pwd = os.getenv("MONGO_ADMIN_PWD", "")
     if not admin_user or not admin_pwd:
         raise RuntimeError("Missing MONGO_ADMIN_USER / MONGO_ADMIN_PWD. Load .env before running.")
-    uri = f"mongodb://{admin_user}:{admin_pwd}@{host}:{port}/admin"
+    uri = f"mongodb://{quote_plus(admin_user)}:{quote_plus(admin_pwd)}@{host}:{port}/admin"
     return MongoClient(uri)
 
 
