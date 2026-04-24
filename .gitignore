@@ -1,0 +1,19 @@
+# Ignore local secrets
+.env
+
+# Ignore big raw datasets / dumps (keep them in GCS instead)
+dump/
+*.bson
+*.bson.gz
+*.tar.gz
+*.zip
+*.BIN
+
+# OS / editor
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.python-version
+logs/
+exports/
