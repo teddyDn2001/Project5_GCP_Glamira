@@ -8,8 +8,14 @@ from datetime import datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
-from ip2location import IP2Location
 from pymongo import MongoClient, ASCENDING, UpdateOne
+
+try:
+    # Most installations expose the module with this casing.
+    from IP2Location import IP2Location  # type: ignore
+except Exception:  # pragma: no cover
+    # Fallback for alternative module naming.
+    from ip2location import IP2Location  # type: ignore
 
 
 def mongo_client_from_env() -> MongoClient:
