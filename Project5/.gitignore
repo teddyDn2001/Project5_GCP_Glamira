@@ -1,0 +1,22 @@
+# Ignore local secrets
+.env
+
+# Ignore big raw datasets / dumps (keep them in GCS instead)
+dump/
+*.bson
+*.bson.gz
+*.tar.gz
+*.zip
+*.BIN
+# Explicit names (belt-and-suspenders — never push multi-GB archives to GitHub)
+glamira_ubl*.tar.gz
+IP-COUNTRY-REGION-CITY.BIN
+
+# OS / editor
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.python-version
+logs/
+exports/

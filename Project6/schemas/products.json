@@ -1,0 +1,37 @@
+[
+  {
+    "name": "product_id",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Canonical product id derived from product_id / viewing_product_id during Project 05 crawling."
+  },
+  {
+    "name": "product_name",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Title scraped from the product page (og:title → <title> → <h1> fallback). NULL when crawl was blocked."
+  },
+  {
+    "name": "source_url",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "URL crawled to obtain the product name."
+  },
+  {
+    "name": "status",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "HTTP status code from the crawl (200 OK, 403/429/503 blocked, 0 = transport error)."
+  },
+  {
+    "name": "error",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Free-text reason when the crawl failed (e.g. blocked_429_wait_3.0s)."
+  },
+  {
+    "name": "updated_at",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE"
+  }
+]

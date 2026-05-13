@@ -1,117 +1,51 @@
-# Project 05 — Data Collection & Storage Foundation (GCP + MongoDB)
+# UNIGAP DE — Glamira Data Engineering on GCP
 
-This folder contains the **local source code** (scripts + docs) used to implement Project 05 in a production-like way:
+End-to-end data engineering portfolio for the **Glamira** analytics dataset, built incrementally across multiple projects. Each project lives in its own folder and is **self-contained** (its own `README.md`, `.env.example`, `requirements.txt`, scripts).
 
-- **GCS** as the *raw* data lake (audit-friendly prefixes)
-- **VM + MongoDB** as operational storage and processing engine
-- Derived collections for:
-  - **IP enrichment** (`unique_ips` → `ip_locations`)
-  - **Product discovery + crawling** (`product_events` → `product_candidates` → `products`)
+| Project | Folder | Focus | Status |
+| --- | --- | --- | --- |
+| **Project 5** | [`Project5/`](./Project5/) | **Data Collection & Storage Foundation** — GCS lake, VM + MongoDB, IP enrichment, product crawling | ✅ done |
+| **Project 6** | [`Project6/`](./Project6/) | **Automated Data Pipeline** — Export raw events to GCS, Cloud Function (Gen 2) trigger, BigQuery raw layer, data profiling | ✅ done |
+| **Project 7** | _(coming)_ | **dbt Transformations** — staging → marts on top of the raw layer | 🛠 planned |
 
-> Secrets must NOT be committed. Use `.env` locally/VM and keep `.env.example` in git.
-
----
-
-## Repository inputs
-
-- `dump/countly/summary.bson` + `summary.metadata.json`  
-  MongoDB dump of `countly.summary` with indexes in metadata.
-- `IP-COUNTRY-REGION-CITY.BIN`  
-  IP2Location database used for IP geolocation.
-- `README_Day1-3_Setup.md`  
-  Setup notes for Day 1–3 (IAM/GCS/VM hardening).
-
----
-
-## Setup (VM or local)
-
-### 1) Create `.env`
-
-```bash
-cp .env.example .env
 ```
-
-Fill in `MONGO_*` variables for your VM MongoDB and (optionally) `GCS_BUCKET`, `INGEST_DATE`, `RUN_DATE`.
-
-### 2) Install dependencies
-
-```bash
-python3 -m pip install -r requirements.txt
+┌────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌────────────────────┐    ┌──────────┐
+│  MongoDB (VM)  │    │ Google Cloud     │    │ Cloud Function   │    │ BigQuery           │    │ Looker   │
+│  Project 5     │ ─► │ Storage (lake)   │ ─► │ (Eventarc Gen 2) │ ─► │ glamira_raw → dbt  │ ─► │ Project 8│
+│                │    │ Project 5 + 6    │    │ Project 6        │    │ Project 7          │    │          │
+└────────────────┘    └──────────────────┘    └──────────────────┘    └────────────────────┘    └──────────┘
 ```
 
 ---
 
-## Scripts (runbook)
+## Common context (shared across projects)
 
-All scripts live in `scripts/` and are designed to be:
+- **GCP project**: `unigap-de-glamira-data` (region `asia-southeast1`)
+- **GCS bucket (lake)**: `gs://unigap-prj5-raw`
+  - Project 5 prefixes: `raw/glamira/ingest_date=…/`, `exports/{ip_locations,products}/run_date=…/`
+  - Project 6 prefixes: `raw/p06/{events,ip_locations,products}/ingest_date=…/`
+- **VM**: `p05-mongo-vm` (MongoDB bound to localhost, auth enabled)
+- **Service accounts**:
+  - `sa-p05-vm-ingest@…` — attached to the VM, writes to the lake.
+  - `sa-p05-bq-loader@…` — runs the Cloud Function, loads GCS → BigQuery.
 
-- **idempotent / resumable** (safe to rerun)
-- **logged** (you can attach logs to submission)
-- **least-privilege friendly** (app user for pipelines; admin only when required)
-
-### A) Restore dump into MongoDB (raw)
-
-1. Upload raw dump to GCS (optional).
-2. Download to VM.
-3. Restore into MongoDB:
-
-```bash
-python3 scripts/01_restore_dump.py \
-  --dump-root dump \
-  --db countly \
-  --collection summary
-```
-
-### B) Build `unique_ips` for IP enrichment
-
-```bash
-python3 scripts/02_build_unique_ips.py
-```
-
-Outputs:
-- MongoDB: `glamira.unique_ips` with `unique(ip)` index
-- CSV export: `exports/ip_locations/unique_ips_<run_date>.csv` (optional)
-
-### C) Enrich IP locations (`unique_ips` → `ip_locations`)
-
-```bash
-python3 scripts/04_enrich_ip_locations.py
-```
-
-Outputs:
-- MongoDB: `glamira.ip_locations`
-- CSV export: `exports/ip_locations/ip_locations_<run_date>.csv`
-
-### D) Build product candidates and crawl product names
-
-```bash
-python3 scripts/03_products_pipeline.py
-```
-
-Outputs:
-- MongoDB: `glamira.product_events`, `glamira.product_candidates`, `glamira.products`
-- Logs: `logs/`
-- CSV export: `exports/products/products_<run_date>.csv`
+Secrets (Mongo passwords, etc.) are kept in each project's own `.env` (gitignored). Templates live in `*/​.env.example`.
 
 ---
 
-## End-to-end (one command)
+## Quick start
 
-Once `.env` is configured and dependencies are installed:
+Each project has its own runbook. Start with the one you want to reproduce:
 
-```bash
-python3 scripts/00_end_to_end.py --restore-drop
-```
-
-Flags:
-- `--skip-restore`: do not run `mongorestore` (useful if you already restored)
-- `--restore-drop`: drop raw collection before restore (safe for clean reruns)
+- Project 5 — see [`Project5/README.md`](./Project5/README.md) for VM setup, MongoDB restore, IP/products pipeline.
+- Project 6 — see [`Project6/README.md`](./Project6/README.md) for the GCS → BigQuery automated pipeline, or [`Project6/docs/LEARNING_GUIDE.md`](./Project6/docs/LEARNING_GUIDE.md) for a step-by-step walkthrough of the problem.
 
 ---
 
-## Notes / best practices
+## Repo conventions
 
-- **Raw is immutable**: never overwrite raw dumps; use new `ingest_date=...` prefixes.
-- For long-running commands, use `tmux` on the VM.
-- Crawling can hit rate limits; the crawler implements retries + backoff + sleep jitter.
-
+- One folder per project, **never** spill files into the repo root.
+- Per-project `.env.example` — copy to `.env` locally, never commit.
+- Per-project `requirements.txt` so each project can be installed in isolation.
+- `LESSONS_LEARNED.md` / `ARCHITECTURE.md` next to the code, not in a separate wiki.
+- Commits use Conventional-Commits-ish prefixes: `feat:`, `fix:`, `docs:`, `chore:`.

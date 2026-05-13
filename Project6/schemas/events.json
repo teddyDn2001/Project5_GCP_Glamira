@@ -1,0 +1,165 @@
+[
+  {
+    "name": "_id",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Original Mongo ObjectId, serialised by bson.json_util RELAXED mode (looks like {\"$oid\":\"…\"}). Loaded as STRING for raw fidelity."
+  },
+  {
+    "name": "time_stamp",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Event time in unix epoch seconds (Countly convention)."
+  },
+  {
+    "name": "collection",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Source collection / event_name in the Countly summary dump (e.g. view_product_detail, add_to_cart_action)."
+  },
+  {
+    "name": "event_name",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Alias for `collection` populated by some clients; kept for raw fidelity."
+  },
+  {
+    "name": "app_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "device_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "ip",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "country",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "region",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "city",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "current_url",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "referrer_url",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "user_agent",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "resolution",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "language",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "store_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "user_id_db",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "product_id",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Lifted to top-level for clustering. Source can be string OR int in Mongo; we coerce to STRING."
+  },
+  {
+    "name": "viewing_product_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "price",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Source dump stores price as either string or number; STRING preserves all values losslessly."
+  },
+  {
+    "name": "currency",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "key_search",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "is_paypal",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "recommendation",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "show_recommendation",
+    "type": "BOOLEAN",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "email_address",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "cart_products",
+    "type": "JSON",
+    "mode": "NULLABLE",
+    "description": "Variable-shape array; kept as native JSON so the staging layer (dbt) can flatten it later."
+  },
+  {
+    "name": "option",
+    "type": "JSON",
+    "mode": "NULLABLE",
+    "description": "Variable-shape map of selected product options."
+  },
+  {
+    "name": "order_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "cat_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "collect_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  }
+]

@@ -1,0 +1,36 @@
+# --- Project 06 secrets / local-only ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# --- Local outputs (don't commit big artifacts) ---
+exports/
+logs/
+tmp/
+*.ndjson
+*.ndjson.gz
+*.jsonl
+*.jsonl.gz
+*.csv.gz
+*.parquet
+
+# --- Cloud Function build / deploy artifacts ---
+cloud_function/.gcloudignore
+cloud_function/__pycache__/
+*.zip
+
+# --- Data profiling generated outputs ---
+docs/data_profiling_report_*.md
+
+# --- IDE ---
+.vscode/
+.idea/
+.DS_Store

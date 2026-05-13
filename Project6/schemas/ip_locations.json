@@ -1,0 +1,55 @@
+[
+  {
+    "name": "ip",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "IPv4 or IPv6 address. Unique per row in the source MongoDB collection."
+  },
+  {
+    "name": "country_short",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "ISO 3166-1 alpha-2 country code (e.g. VN, US, DE)."
+  },
+  {
+    "name": "country_long",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "region",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "city",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "latitude",
+    "type": "FLOAT",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "longitude",
+    "type": "FLOAT",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "zipcode",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "timezone",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "updated_at",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE",
+    "description": "ISO-8601 UTC timestamp the IP was looked up by Project 05."
+  }
+]

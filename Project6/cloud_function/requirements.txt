@@ -1,0 +1,5 @@
+# Pinned, minimal, audited deps for the Cloud Function runtime.
+# Keep this file SMALL — every extra dep increases cold start time.
+functions-framework>=3.5,<4
+google-cloud-bigquery>=3.20,<4
+cloudevents>=1.10,<2
