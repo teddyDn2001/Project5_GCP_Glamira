@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_events__checkout_success
+    description: Filtered checkout_success events from glamira_raw.events.
+    columns:
+      - name: event_id
+        tests: [unique, not_null]
+      - name: event_date
+        tests: [not_null]
+
+  - name: stg_products
+    description: Deduped product reference from glamira_raw.products.
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+
+  - name: stg_ip_locations
+    description: Deduped IP→geo lookup (join in fact build; not stored on dim_location).
+    columns:
+      - name: ip
+        tests: [unique, not_null]
+
+  - name: stg_checkout_line_items
+    description: Checkout line items — grain for the sales fact.
+    columns:
+      - name: line_item_id
+        tests: [unique, not_null]
+      - name: event_id
+        tests: [not_null]

@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: glamira_raw
+    database: "{{ var('raw_project') }}"
+    schema: "{{ var('raw_dataset') }}"
+    tables:
+      - name: events
+        description: P6 raw Countly events (~41M rows). Filter checkout_success in staging.
+      - name: products
+        description: P5/P6 crawled product reference (~19K rows).
+      - name: ip_locations
+        description: IP2Location enrichment (~3.2M rows). Join key is ip (staging only).

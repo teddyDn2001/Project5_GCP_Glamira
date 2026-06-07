@@ -1,0 +1,81 @@
+// Project 07 — Glamira mart layer (import at https://dbdiagram.io)
+// Export: PNG / PDF for supervisor review
+
+Project glamira_p7 {
+  database_type: "BigQuery"
+  Note: "Transaction fact from checkout_success (P6 glamira_raw.events)"
+}
+
+Table mart.fact_sales_order_detail {
+  sales_order_line_key bigint [pk, note: "Surrogate PK — one row per checkout line item"]
+  date_key int [ref: > mart.dim_date.date_key]
+  customer_key bigint [ref: > mart.dim_customer.customer_key]
+  product_key bigint [ref: > mart.dim_product.product_key]
+  geo_key bigint [ref: > mart.dim_geo.geo_key]
+  payment_method_key int [ref: > mart.dim_payment_method.payment_method_key]
+  order_id varchar [note: "Degenerate dimension"]
+  event_id varchar [note: "Mongo ObjectId string"]
+  order_qty int [note: "Measure"]
+  sales_amount decimal(18,2) [note: "Measure"]
+  unit_price decimal(18,2) [note: "Measure"]
+  currency_code varchar
+}
+
+Table mart.dim_date {
+  date_key int [pk]
+  full_date date
+  year_number int
+  month_number int
+  month_name varchar
+  quarter_number int
+  day_of_week varchar
+  is_weekday boolean
+}
+
+Table mart.dim_customer {
+  customer_key bigint [pk]
+  device_id varchar
+  user_id_db varchar
+  email_hash varchar [note: "PII masked"]
+  is_identified_user boolean
+}
+
+Table mart.dim_product {
+  product_key bigint [pk]
+  product_id varchar [note: "Natural key"]
+  product_name varchar
+  source_url varchar
+  crawl_status_code int
+  is_crawl_success boolean
+}
+
+Table mart.dim_geo {
+  geo_key bigint [pk]
+  ip_hash varchar [note: "PII masked"]
+  country_short varchar
+  country_name varchar
+  region_name varchar
+  city_name varchar
+  latitude float
+  longitude float
+}
+
+Table mart.dim_payment_method {
+  payment_method_key int [pk]
+  payment_method_code varchar
+  payment_method_name varchar
+}
+
+// --- Source reference (not in mart; for documentation) ---
+
+Table glamira_raw.events {
+  Note: "P6 raw — filter checkout_success in staging"
+}
+
+Table glamira_raw.products {
+  Note: "P6 raw — product crawl"
+}
+
+Table glamira_raw.ip_locations {
+  Note: "P6 raw — IP2Location enrichment"
+}

@@ -6,7 +6,7 @@ End-to-end data engineering portfolio for the **Glamira** analytics dataset, bui
 | --- | --- | --- | --- |
 | **Project 5** | [`Project5/`](./Project5/) | **Data Collection & Storage Foundation** — GCS lake, VM + MongoDB, IP enrichment, product crawling | ✅ done |
 | **Project 6** | [`Project6/`](./Project6/) | **Automated Data Pipeline** — Export raw events to GCS, Cloud Function (Gen 2) trigger, BigQuery raw layer, data profiling | ✅ done |
-| **Project 7** | _(coming)_ | **dbt Transformations** — staging → marts on top of the raw layer | 🛠 planned |
+| **Project 7** | [`Project7/`](./Project7/) | **dbt Transformations & BI** — staging → mart star schema (`fact_sales_order_detail` + dims), dbt tests, Looker Studio dashboard | ✅ done |
 
 ```
 ┌────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌────────────────────┐    ┌──────────┐
@@ -39,6 +39,7 @@ Each project has its own runbook. Start with the one you want to reproduce:
 
 - Project 5 — see [`Project5/README.md`](./Project5/README.md) for VM setup, MongoDB restore, IP/products pipeline.
 - Project 6 — see [`Project6/README.md`](./Project6/README.md) for the GCS → BigQuery automated pipeline, or [`Project6/docs/LEARNING_GUIDE.md`](./Project6/docs/LEARNING_GUIDE.md) for a step-by-step walkthrough of the problem.
+- Project 7 — see [`Project7/glamira_dbt/README.md`](./Project7/glamira_dbt/README.md) for the dbt runbook, or [`Project7/docs/DATA_MODEL.md`](./Project7/docs/DATA_MODEL.md) for the star-schema model and [`Project7/docs/LOOKER_STUDIO_SETUP.md`](./Project7/docs/LOOKER_STUDIO_SETUP.md) for the dashboard.
 
 ---
 

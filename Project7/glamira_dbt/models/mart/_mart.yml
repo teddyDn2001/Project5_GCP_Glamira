@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Calendar dimension (When). date_key format YYYYMMDD.
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+
+  - name: dim_customer
+    description: Customer dimension (Who). email_address stored; mask in BI view.
+    columns:
+      - name: customer_key
+        tests: [unique, not_null]
+
+  - name: dim_product
+    description: Product dimension (What) from crawled products reference.
+    columns:
+      - name: product_key
+        tests: [unique, not_null]
+      - name: product_id
+        tests: [unique, not_null]
+
+  - name: dim_location
+    description: Location dimension (Where). No IP columns.
+    columns:
+      - name: location_key
+        tests: [unique, not_null]
+
+  - name: fact_sales_order_detail
+    description: Transaction fact from checkout_success line items.
+    columns:
+      - name: sales_order_line_key
+        tests: [unique, not_null]
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: location_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_location')
+                field: location_key
+      - name: sales_amount
+        description: Line revenue measure.

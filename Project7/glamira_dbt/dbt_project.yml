@@ -1,0 +1,31 @@
+name: glamira_dbt
+version: "1.0.0"
+config-version: 2
+
+profile: glamira
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+
+packages-install-path: dbt_packages
+
+vars:
+  raw_project: unigap-de-glamira-data
+  raw_dataset: glamira_raw
+
+models:
+  glamira_dbt:
+    staging:
+      +schema: staging
+      +materialized: view
+    mart:
+      +schema: mart
+      dimensions:
+        +materialized: table
+      facts:
+        +materialized: table
+      looker:
+        +materialized: view
